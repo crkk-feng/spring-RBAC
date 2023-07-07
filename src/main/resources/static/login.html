@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="/PearAdmin/admin/css/pearForm.css"/>
+    <link rel="stylesheet" href="/PearAdmin/component/layui/css/layui.css"/>
+    <link rel="stylesheet" href="/PearAdmin/admin/css/pearButton.css"/>
+    <link rel="stylesheet" href="/PearAdmin/assets/login.css"/>
+</head>
+<body background="PearAdmin/admin/images/background.svg">
+<form class="layui-form" action="/login" method="post">
+    <div class="layui-form-item">
+        <<img class="logo" src="PearAdmin/admin/images/logo.png"/>
+        <div class="title">Cr Admin</div>
+        <div class="desc">
+            Spring RBAC 权 限 管 理 系 统
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <input id="username" name="username" placeholder="用 户 名 : " type="text" hover class="layui-input" />
+    </div>
+    <div class="layui-form-item">
+        <input id="password" name="password" placeholder="密 码 : " type="password"  hover class="layui-input" />
+    </div>
+    <div class="layui-form-item">
+        <input id="captcha" name="captcha" placeholder="验 证 码:" type="text"  hover class="layui-verify" style="border: 1px solid #dcdfe6;">
+        <img src="/captcha" width="130px" height="44px" onclick="this.src=this.src+'?'+Math.random()" title="点击刷新"/>
+    </div>
+
+    <div class="layui-form-item">
+        <input type="checkbox" name="remember-me" title="记住密码" lay-skin="primary" checked>
+    </div>
+    <div class="layui-form-item">
+        <button style="background-color: #5FB878!important;" class="pear-btn pear-btn-primary login">
+            登 入
+        </button>
+    </div>
+</form>
+<script src="/PearAdmin/component/layui/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['form', 'element','jquery'], function() {
+        var form = layui.form;
+        var element = layui.element;
+        var $ = layui.jquery;
+
+        $("body").on("click",".login",function(){
+            location.href="index"
+        })
+    })
+</script>
+</body>
+</html>
+
