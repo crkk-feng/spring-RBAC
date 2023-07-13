@@ -1,5 +1,7 @@
 package com.relaper.cr.springrbac.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.relaper.cr.springrbac.dao.RoleDao;
 import com.relaper.cr.springrbac.dao.RoleMenuDao;
 import com.relaper.cr.springrbac.dao.RoleUserDao;
@@ -31,9 +33,10 @@ public class RoleServiceImpl implements RoleService {
 
 
     @Override
-    public Result<MyRole> getFuzzyRolesByPage(Integer startPosition, Integer limit,String queryName) {
-        List<MyRole> fuzzyRolesByPage = roleDao.getFuzzyRolesByPage(startPosition, limit, queryName);
-        return Result.ok().count(fuzzyRolesByPage.size()).data(fuzzyRolesByPage).code(ResultCode.TABLE_SUCCESS);
+    public Result<MyRole> getFuzzyRolesByPage(Integer offectPosition, Integer limit,String queryName) {
+        Page page = PageHelper.offsetPage(offectPosition,limit);
+        List<MyRole> fuzzyRolesByPage = roleDao.getFuzzyRolesByPage(queryName);
+        return Result.ok().count(page.getTotal()).data(fuzzyRolesByPage).code(ResultCode.TABLE_SUCCESS);
     }
 
     @Override

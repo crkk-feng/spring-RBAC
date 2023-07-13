@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8088
 spring:
   profiles:
     active: dev
@@ -16,7 +16,7 @@ spring:
       # 初始化配置
       initial-size: 3
       # 最小连接数
-      min-idle: 3
+      in-idle: 3
       # 最大连接数
       max-active: 15
       # 获取连接超时时间
@@ -45,10 +45,6 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
-  security:
-    user:
-      name: admin
-      password: admin
 
 #mybatis配置
 mybatis:
@@ -61,4 +57,17 @@ logging:
   file:
     path: src\main\resources\logger\ # logger文件夹需要提前生成
 
+jwt:
+  tokenHeader: Authorization #JWT存储的请求头
+  secret: spring-RBAC #JWT加解密使用的密钥
+  expiration: 604800 #JWT的超期限时间(60*60*24*7)
+  tokenHead: 'Bearer ' #JWT负载中拿到开头
+
+# 分页配置
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+  pageSizeZero: true #pageSize=0 or RowBounds.Limit = 0的时候就不适用分页，但是返回对象还是PageInfo
 

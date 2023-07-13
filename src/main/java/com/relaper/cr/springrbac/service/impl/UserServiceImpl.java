@@ -1,5 +1,7 @@
 package com.relaper.cr.springrbac.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.relaper.cr.springrbac.dao.RoleUserDao;
 import com.relaper.cr.springrbac.dao.UserDao;
 import com.relaper.cr.springrbac.dto.UserDto;
@@ -24,10 +26,12 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
     @Autowired
     private RoleUserDao roleUserDao;
+
     @Override
-    public Result<MyUser> getAllUsersByPage(Integer startPosition, Integer limit, UserQueryDto userQueryDto) {
-        List<MyUser> fuzzyUserByPage = userDao.getFuzzyUserByPage(startPosition, limit, userQueryDto);
-        return Result.ok().count(fuzzyUserByPage.size()).data(userDao.getFuzzyUserByPage(startPosition,limit,userQueryDto)).code(ResultCode.TABLE_SUCCESS);
+    public Result<MyUser> getAllUsersByPage(Integer offectPosition, Integer limit, UserQueryDto userQueryDto) {
+        Page page = PageHelper.offsetPage(offectPosition,limit);
+        List<MyUser> fuzzyUserByPage = userDao.getFuzzyUserByPage(userQueryDto);
+        return Result.ok().count(page.getTotal()).data(fuzzyUserByPage).code(ResultCode.TABLE_SUCCESS);
     }
 
 
@@ -76,5 +80,10 @@ public class UserServiceImpl implements UserService {
     public int deleteUser(Integer id) {
         roleUserDao.deleteRoleUserByUserId(id);
         return userDao.deleteUserById(id);
+    }
+
+    @Override
+    public MyUser getUser(String userName) {
+        return userDao.getUser(userName);
     }
 }

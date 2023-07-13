@@ -1,10 +1,12 @@
 package com.relaper.cr.springrbac.controller;
 
 import com.relaper.cr.springrbac.dto.MenuIndexDto;
+import com.relaper.cr.springrbac.security.dto.JwtUserDto;
 import com.relaper.cr.springrbac.service.MenuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +28,9 @@ public class AdminController {
     @GetMapping(value = "/index")
     @ResponseBody
     @ApiOperation(value = "通过用户id获取菜单")
-    public List<MenuIndexDto> getMenu(Integer userId) {
+    public List<MenuIndexDto> getMenu() {
+        JwtUserDto jwtUserDto = (JwtUserDto)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Integer userId = jwtUserDto.getMyUser().getId();
         return menuService.getMenu(userId);
     }
 
@@ -49,9 +53,6 @@ public class AdminController {
     public String error500(){
         return "error/500";
     }
-    @GetMapping("/admin")
-    public String admin(){
-        return "index";
-    }
+
 }
 

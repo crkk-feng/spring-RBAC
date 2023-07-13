@@ -1,5 +1,7 @@
 package com.relaper.cr.springrbac.utils;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.relaper.cr.springrbac.dto.MenuDto;
 import com.relaper.cr.springrbac.dto.MenuIndexDto;
 
@@ -27,15 +29,33 @@ public class TreeUtil {
         // }
         List<Integer> collect = listByRoleId.stream().map(MenuDto::getId).collect(Collectors.toList());
         List<Integer> collect1 = menuDtos.stream().map(MenuDto::getId).collect(Collectors.toList());
-        for (Integer item : collect) {// 遍历list2
-            if (collect1.contains(item)) {// 如果存在这个数
+        // 遍历list2
+        for (Integer item : collect) {
+            if (collect1.contains(item)) {
+                // 如果存在这个数
                 MenuDto menuDto = new MenuDto();
-                menuDto = menuDtos.get(item-1);
+                int i = collect1.indexOf(item);
+                menuDto = menuDtos.get(i);
                 menuDto.setCheckArr("1");
-                menuDtos.set(item-1,menuDto);
+                menuDtos.set(i,menuDto);
             }
         }
         return menuDtos;
+    }
+
+    public static void setMenuTree(Integer parentId, List<MenuIndexDto> menusAll, JSONArray array) {
+        for (MenuIndexDto per : menusAll) {
+            if (per.getParentId().equals(parentId)) {
+                String string = JSONObject.toJSONString(per);
+                JSONObject parent = (JSONObject) JSONObject.parse(string);
+                array.add(parent);
+                if (menusAll.stream().filter(p -> p.getParentId().equals(per.getId())).findAny() != null) {
+                    JSONArray child = new JSONArray();
+                    parent.put("child", child);
+                    setMenuTree(per.getId(), menusAll, child);
+                }
+            }
+        }
     }
 
     public static List<MenuIndexDto> parseMenuTree(List<MenuIndexDto> list){

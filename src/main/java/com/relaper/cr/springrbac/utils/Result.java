@@ -25,23 +25,23 @@ public class Result<T> implements Serializable {
     private String msg;
 
     @ApiModelProperty(value = "总数")
-    private Integer count;
+    private Long count;
 
     @ApiModelProperty(value = "返回数据")
     private List<T> data = new ArrayList<T>();
 
-    //把构造方法私有
+    @ApiModelProperty(value = "token数据")
+    private String jwt;
+
+    /**
+     * 把构造方法私有
+     */
     private Result() {}
 
-    public static Result table_sucess() {
-        Result r = new Result();
-        r.setSuccess(true);
-        r.setCode(ResultCode.TABLE_SUCCESS);
-        r.setMsg("成功");
-        return r;
-    }
-
-    //成功静态方法
+    /**
+     * 成功静态方法
+     * @return
+     */
     public static Result ok() {
         Result r = new Result();
         r.setSuccess(true);
@@ -50,7 +50,10 @@ public class Result<T> implements Serializable {
         return r;
     }
 
-    //失败静态方法
+    /**
+     * 失败静态方法
+     * @return
+     */
     public static Result error() {
         Result r = new Result();
         r.setSuccess(false);
@@ -79,9 +82,15 @@ public class Result<T> implements Serializable {
         this.data.addAll(list);
         return this;
     }
-    public Result count(Integer count){
+
+    public Result count(Long count){
         this.count = count;
         return this;
     }
+    public Result jwt(String jwt){
+        this.jwt = jwt;
+        return this;
+    }
+
 }
 

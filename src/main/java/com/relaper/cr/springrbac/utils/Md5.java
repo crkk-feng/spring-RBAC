@@ -16,7 +16,7 @@ import java.security.NoSuchAlgorithmException;
 /**
  * MD5加密
  */
-public class MD5 {
+public class Md5 {
 
 	/**
 	 * Encodes a string
